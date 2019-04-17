@@ -249,7 +249,8 @@ class Trainer(object):
                 self.save_dir, "valid_{}.result").format(self.epoch)
             gen_eval_metrics = evaluate_generation(generator=self.generator,
                                                    data_iter=self.valid_iter,
-                                                   save_file=gen_save_file)
+                                                   save_file=gen_save_file) #这个时候verbo是false，所以不会打印的屏幕上，但是已经保存在对应的
+                                                                            # valid_x.result文件中，最后test的时候，verbe=true会打印信息
             self.logger.info(gen_eval_metrics)
 
         self.save()
