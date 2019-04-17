@@ -206,7 +206,7 @@ def main():
         logger.info("Training done!")
         # Test
         logger.info("")
-        trainer.load(os.path.join(config.save_dir, "best"))
+        trainer.load(os.path.join(config.save_dir, "best")) # Loaded train state from './models/best.train' 把valid上表现最好的load回来
         logger.info("Testing starts ...")
         metrics, scores = evaluate(model, test_iter)
         logger.info(metrics.report_cum())
