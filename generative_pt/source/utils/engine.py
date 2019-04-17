@@ -195,9 +195,9 @@ class Trainer(object):
         self.epoch += 1
         train_mm = MetricsManager()
         num_batches = len(self.train_iter)
-        self.logger.info(self.train_start_message)
+        self.logger.info(self.train_start_message) # " Model Training "
 
-        for batch_id, inputs in enumerate(self.train_iter, 1):
+        for batch_id, inputs in enumerate(self.train_iter, 1): # 下标起始位置是1
             self.model.train()
             start_time = time.time()
             # Do a training iteration
