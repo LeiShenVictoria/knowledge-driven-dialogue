@@ -261,7 +261,7 @@ class Trainer(object):
         """
         valid_mm, _ = evaluate(self.model, self.valid_iter)
         self.logger.info(valid_mm.report_cum())
-        for _ in range(self.epoch, self.num_epochs):
+        for _ in range(self.epoch, self.num_epochs): # 0-200
             self.train_epoch()
 
     def save(self, is_best=False):
