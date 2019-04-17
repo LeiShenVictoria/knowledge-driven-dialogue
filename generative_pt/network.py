@@ -208,7 +208,7 @@ def main():
         logger.info("")
         trainer.load(os.path.join(config.save_dir, "best")) # Loaded train state from './models/best.train' 把valid上表现最好的load回来
         logger.info("Testing starts ...")
-        metrics, scores = evaluate(model, test_iter)
+        metrics, scores = evaluate(model, test_iter) # 在training stage，demo.dev = demo.test
         logger.info(metrics.report_cum())
         logger.info("Generation starts ...")
         test_gen_file = os.path.join(config.save_dir, "test.result")
