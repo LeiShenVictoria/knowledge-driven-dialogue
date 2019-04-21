@@ -272,7 +272,7 @@ class KnowledgeSeq2Seq(BaseModel):
         logits = outputs.logits
         scores = -self.nll_loss(logits, target, reduction=False)
         nll_loss = self.nll_loss(logits, target)
-        num_words = target.ne(self.padding_idx).sum().item()
+        num_words = target.ne(self.padding_idx).sum().item() # token个数，target中不等于padding_idx的个数 .sum()=tensor(N) .item()=N
         acc = accuracy(logits, target, padding_idx=self.padding_idx)
         metrics.add(nll=(nll_loss, num_words), acc=acc)
 
