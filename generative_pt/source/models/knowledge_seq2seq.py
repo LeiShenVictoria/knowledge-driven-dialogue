@@ -66,7 +66,7 @@ class KnowledgeSeq2Seq(BaseModel):
                                   embedder=enc_embedder, num_layers=self.num_layers,
                                   bidirectional=self.bidirectional, dropout=self.dropout)
 
-        if self.with_bridge:
+        if self.with_bridge: # 加入一个linear和tanh层
             self.bridge = nn.Sequential(nn.Linear(self.hidden_size, self.hidden_size), nn.Tanh())
 
         if self.tie_embedding:
