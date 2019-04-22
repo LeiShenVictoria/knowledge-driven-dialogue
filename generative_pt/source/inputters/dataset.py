@@ -34,13 +34,13 @@ class Dataset(torch.utils.data.Dataset):
         """
         collate_fn
         """
-        def collate(data_list):
+        def collate(data_list): # data_list的长度就是一个batch_size，每个元素都是__getitem__得到的
             """
             collate
             """
             batch = Pack()
-            for key in data_list[0].keys():
-                batch[key] = list2tensor([x[key] for x in data_list])
+            for key in data_list[0].keys(): # keys(): src, tgt, cue
+                batch[key] = list2tensor([x[key] for x in data_list]) # 所有的src, tgt, cue分别整合在一起
             if device >= 0:
                 batch = batch.cuda(device=device)
             return batch
