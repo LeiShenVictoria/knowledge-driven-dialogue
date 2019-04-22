@@ -36,7 +36,7 @@ class MetricsManager(object):
         update
         """
         num_samples = metrics.pop("num_samples", 1) # 从metrics字典中删除num_samples及其对应的value，返回值是num_samples的value；
-                                                    # 如果没有num_sampls，返回1
+                                                    # 如果没有num_samples，返回1
         self.num_samples += num_samples
 
         for key, val in metrics.items():
