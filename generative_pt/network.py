@@ -152,6 +152,7 @@ def main():
         model.load(config.ckpt)
         return generator
     # Testing
+    ### Testing Phase
     elif config.test and config.ckpt:
         print(model)
         model.load(config.ckpt)
@@ -161,6 +162,7 @@ def main():
         print("Generating ...")
         evaluate_generation(generator, test_iter, save_file=config.gen_file, verbos=True)
     else:
+	### Training Phase
         # Load word embeddings
         if config.use_embed and config.embed_file is not None:
             model.encoder.embedder.load_embeddings(
