@@ -81,7 +81,7 @@ def max_lens(X):
             "Data list whose dim is greater than 3 is not supported!")
 
 
-def list2tensor(X):
+def list2tensor(X): # list2tensor返回值是tensor+lengths,所以loader中的src, tgt, cue都是tensor + length的格式
     """
     list2tensor
     """
