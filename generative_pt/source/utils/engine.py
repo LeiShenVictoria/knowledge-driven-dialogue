@@ -95,7 +95,7 @@ class MetricsManager(object):
 
             if num_words is not None:
                 ppl = np.exp(min(val / num_words, 100))
-                metric_str = "{}_PPL-{:.3f}".format(key.upper(), ppl)
+                metric_str = "{}_PPL-{:.3f}".format(key.upper(), ppl) #只有nll=(nllloss, num_words)
                 metric_strs.append(metric_str)
 
         metric_strs = "   ".join(metric_strs)
