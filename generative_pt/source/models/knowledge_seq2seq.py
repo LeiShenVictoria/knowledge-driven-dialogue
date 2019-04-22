@@ -107,7 +107,7 @@ class KnowledgeSeq2Seq(BaseModel):
         self.sigmoid = nn.Sigmoid()
         self.softplus = nn.Softplus()
 
-        if self.use_bow:
+        if self.use_bow: # MLP: a two layer MLP
             self.bow_output_layer = nn.Sequential(
                     nn.Linear(in_features=self.hidden_size, out_features=self.hidden_size),
                     nn.Tanh(),
