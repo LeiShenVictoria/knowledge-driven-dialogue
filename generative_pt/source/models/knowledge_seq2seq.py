@@ -140,17 +140,17 @@ class KnowledgeSeq2Seq(BaseModel):
         encode
         """
         outputs = Pack()
-        enc_inputs = _, lengths = inputs.src[0][:, 1:-1], inputs.src[1]-2
+        enc_inputs = _, lengths = inputs.src[0][:, 1:-1], inputs.src[1]-2 # 在field.py中str2num的时候，在每个句子前后都会加bos,eos
         enc_outputs, enc_hidden = self.encoder(enc_inputs, hidden)
 
         if self.with_bridge:
             enc_hidden = self.bridge(enc_hidden)
 
         # knowledge
-        batch_size, sent_num, sent  = inputs.cue[0].size()
+        batch_size, sent_num, sent  = inputs.cue[0].size() # cue[0] for knowledge content, 3D
         tmp_len = inputs.cue[1]
-        tmp_len[tmp_len > 0] -= 2
-        cue_inputs = inputs.cue[0].view(-1, sent)[:, 1:-1], tmp_len.view(-1)
+        tmp_len[tmp_len > 0] -= 2 # 去掉bos, eos
+        cue_inputs = inputs.cue[0].view(-1, sent)[:, 1:-1], tmp_len.view(-1) # 1:-1去掉bos, eos
         cue_enc_outputs, cue_enc_hidden = self.knowledge_encoder(cue_inputs, hidden)
         cue_outputs = cue_enc_hidden[-1].view(batch_size, sent_num, -1)
         # Attention
@@ -327,7 +327,9 @@ class KnowledgeSeq2Seq(BaseModel):
         iterate
         """
         enc_inputs = inputs
-        dec_inputs = inputs.tgt[0][:, :-1], inputs.tgt[1] - 1
+        dec_inputs = inputs.tgt[0][:, :-1], inputs.tgt[1] - 1 # 由于Pack()中定义了__getattr__方法，所以这里.tgt这样调用可以，
+                                                              # 相当于是['tgt']
+                                                              # 这里的dec_inputs包括inputs.tgt[0]的内容和inputs.tgt[1]里的len
         target = inputs.tgt[0][:, 1:]
 
         outputs = self.forward(enc_inputs, dec_inputs, is_training=is_training)
