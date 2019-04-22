@@ -45,7 +45,7 @@ class MetricsManager(object):
                     val = val.item()
                     self.metrics_cum[key] += val * num_samples
                 else:
-                    assert len(val) == 2
+                    assert len(val) == 2 # 只有nll=(nllloss, num_words)
                     val, num_words = val[0].item(), val[1]
                     self.metrics_cum[key] += np.array(
                         [val * num_samples, num_words])
