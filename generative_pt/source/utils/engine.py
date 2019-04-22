@@ -41,7 +41,7 @@ class MetricsManager(object):
 
         for key, val in metrics.items():
             if val is not None:
-                if isinstance(val, torch.Tensor):
+                if isinstance(val, torch.Tensor): # 如果val是一个Tensor，需要取得item()
                     val = val.item()
                     self.metrics_cum[key] += val * num_samples
                 else:
