@@ -160,7 +160,7 @@ class KnowledgeSeq2Seq(BaseModel):
         cue_attn = cue_attn.squeeze(1)
         outputs.add(prior_attn=cue_attn)
         indexs = cue_attn.max(dim=1)[1]
-        # hard attention
+        # hard attention 取max值
         if self.use_gs:
             knowledge = cue_outputs.gather(1, \
                 indexs.view(-1, 1, 1).repeat(1, 1, cue_outputs.size(-1)))
