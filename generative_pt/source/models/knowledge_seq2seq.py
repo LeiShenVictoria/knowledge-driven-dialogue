@@ -181,7 +181,7 @@ class KnowledgeSeq2Seq(BaseModel):
             outputs.add(posterior_attn=posterior_attn)
             # Gumbel Softmax
             if self.use_gs:
-                gumbel_attn = F.gumbel_softmax(torch.log(posterior_attn + 1e-10), 0.1, hard=True)
+                gumbel_attn = F.gumbel_softmax(torch.log(posterior_attn + 1e-10), 0.1, hard=True) # 防止log内为0
                 outputs.add(gumbel_attn=gumbel_attn)
                 knowledge = torch.bmm(gumbel_attn.unsqueeze(1), cue_outputs)
                 indexs = gumbel_attn.max(-1)[1]
