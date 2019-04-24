@@ -139,6 +139,7 @@ class KnowledgeSeq2Seq(BaseModel):
         """
         encode
         """
+        # inputs就是一个batch中的一条{'src','tgt','cue'}
         outputs = Pack()
         enc_inputs = _, lengths = inputs.src[0][:, 1:-1], inputs.src[1]-2 # 在field.py中str2num的时候，在每个句子前后都会加bos,eos
         enc_outputs, enc_hidden = self.encoder(enc_inputs, hidden)
