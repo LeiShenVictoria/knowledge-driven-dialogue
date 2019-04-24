@@ -158,7 +158,7 @@ class KnowledgeSeq2Seq(BaseModel):
         tmp_len[tmp_len > 0] -= 2 # 去掉bos, eos
         cue_inputs = inputs.cue[0].view(-1, sent)[:, 1:-1], tmp_len.view(-1) # 1:-1去掉bos, eos
         cue_enc_outputs, cue_enc_hidden = self.knowledge_encoder(cue_inputs, hidden)
-        cue_outputs = cue_enc_hidden[-1].view(batch_size, sent_num, -1) # cue_enc_hidden[-1]每条knowledge的表示
+        cue_outputs = cue_enc_hidden[-1].view(batch_size, sent_num, -1) # cue_enc_hidden[-1]每条knowledge的表示, cue比src, tgt多一维
         # Attention
         weighted_cue, cue_attn = self.prior_attention(query=enc_hidden[-1].unsqueeze(1),
                                                       memory=cue_outputs,
