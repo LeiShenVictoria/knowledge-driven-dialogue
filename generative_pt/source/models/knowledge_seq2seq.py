@@ -143,6 +143,11 @@ class KnowledgeSeq2Seq(BaseModel):
         outputs = Pack()
         enc_inputs = _, lengths = inputs.src[0][:, 1:-1], inputs.src[1]-2 # 在field.py中str2num的时候，在每个句子前后都会加bos,eos
         enc_outputs, enc_hidden = self.encoder(enc_inputs, hidden)
+        # enc_inputs: (batch_size, seq_len)
+        # enc_output: (batch_size, seq_len, num_directions * hidden_size
+        # enc_hidden: (num_layers * num_directions, batch_size, hidden_size)->(num_layers, batch_size, num_directions * hidden_size)
+        #          此处(1, batch_size, num_directions*hidden_size）取[-1]变成(batch_size,num_directions*hidden_size)
+        # 这里由于rnn_encoder.py的实现，2*hidden_size = config.hidden_size
 
         if self.with_bridge:
             enc_hidden = self.bridge(enc_hidden)
@@ -220,7 +225,7 @@ class KnowledgeSeq2Seq(BaseModel):
         if self.use_kd:
             knowledge = self.knowledge_dropout(knowledge)
 
-        if self.weight_control: # 给knowledge表示再加权，权重就是和enc_hidden[-1]最后一个enc_hidden的相似度
+        if self.weight_control: # 给knowledge表示再加权，权重就是和enc_hidden[-1]的相似度
             weights = (enc_hidden[-1] * knowledge.squeeze(1)).sum(dim=-1)
             weights = self.sigmoid(weights)
             # norm in batch
