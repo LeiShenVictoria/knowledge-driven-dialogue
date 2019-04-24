@@ -111,7 +111,8 @@ def evaluate(model, data_iter, verbose=False):
     ss = []
     with torch.no_grad():
         for inputs in data_iter:
-            metrics, scores = model.iterate(inputs=inputs, is_training=False)
+            metrics, scores = model.iterate(inputs=inputs, is_training=False) #这里的inputs获得的是一个batch的数据，{'src':batch_
+            # size条，同理'tgt','cue'}
             mm.update(metrics)
             ss.extend(scores.tolist())
     return mm, ss
