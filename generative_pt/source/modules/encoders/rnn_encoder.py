@@ -42,7 +42,7 @@ class RNNEncoder(nn.Module):
         self.dropout = dropout
 
         self.rnn = nn.GRU(input_size=self.input_size,
-                          hidden_size=self.rnn_hidden_size,
+                          hidden_size=self.rnn_hidden_size, #这里的hidden_size = config.hidden_size/2
                           num_layers=self.num_layers,
                           batch_first=True,
                           dropout=self.dropout if self.num_layers > 1 else 0,
