@@ -152,7 +152,7 @@ class KnowledgeSeq2Seq(BaseModel):
         tmp_len[tmp_len > 0] -= 2 # 去掉bos, eos
         cue_inputs = inputs.cue[0].view(-1, sent)[:, 1:-1], tmp_len.view(-1) # 1:-1去掉bos, eos
         cue_enc_outputs, cue_enc_hidden = self.knowledge_encoder(cue_inputs, hidden)
-        cue_outputs = cue_enc_hidden[-1].view(batch_size, sent_num, -1)
+        cue_outputs = cue_enc_hidden[-1].view(batch_size, sent_num, -1) # cue_enc_hidden[-1]每条knowledge的表示
         # Attention
         weighted_cue, cue_attn = self.prior_attention(query=enc_hidden[-1].unsqueeze(1),
                                                       memory=cue_outputs,
@@ -167,7 +167,7 @@ class KnowledgeSeq2Seq(BaseModel):
         else:
             knowledge = weighted_cue
 
-        if self.use_posterior:
+        if self.use_posterior: # p(k|y) not p(k|x,y)
             tgt_enc_inputs = inputs.tgt[0][:, 1:-1], inputs.tgt[1]-2
             _, tgt_enc_hidden = self.knowledge_encoder(tgt_enc_inputs, hidden)
             posterior_weighted_cue, posterior_attn = self.posterior_attention(
@@ -219,7 +219,7 @@ class KnowledgeSeq2Seq(BaseModel):
         if self.use_kd:
             knowledge = self.knowledge_dropout(knowledge)
 
-        if self.weight_control:
+        if self.weight_control: # 给knowledge表示再加权，权重就是和enc_hidden[-1]最后一个enc_hidden的相似度
             weights = (enc_hidden[-1] * knowledge.squeeze(1)).sum(dim=-1)
             weights = self.sigmoid(weights)
             # norm in batch
